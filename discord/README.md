@@ -1,7 +1,7 @@
 # discord
 Bookmarklets for interacting with Discord in the browser!
 
-## Warning
+### Warning
 Be careful when handling your Discord user authorization token!
 
 ## msg.js
