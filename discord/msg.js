@@ -1,8 +1,10 @@
 (() => {
 	let auth = "";
-	let cid = "";
+	let body = "uwu";
 	fetch(
-		`https://discordapp.com/api/v6/channels/${cid}/messages`,
+		`https://discordapp.com/api/v6/channels/${
+			document.URL.split("/")[5]
+		}/messages`,
 		{
 			method: "POST",
 			headers: {
@@ -10,7 +12,7 @@
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"content": "uwu this is my POST request"
+				"content": body
 			})
 		}
 	)
