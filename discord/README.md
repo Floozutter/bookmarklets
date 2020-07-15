@@ -7,5 +7,5 @@ Bookmarklets for interacting with Discord in the browser!
 Posts a message to the current channel using your auth token.
 Logs the response to the request to the console.
 
-## Peekaboo.js
+## peekaboo.js
 Posts a message to the current channel, then immediately deletes it.
