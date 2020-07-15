@@ -1,16 +1,19 @@
 (() => {
-	const auth = prompt("Token:"); if (auth === null) { return; }
+	const token = prompt("Token:");
+	if (token === null) { return; }
+	
 	const api = (
 		"https://discord.com/api/v6/channels/"
 		+ document.URL.split("/")[5]
 		+ "/messages"
 	);
+	
 	fetch(
 		api,
 		{
 			method: "POST",
 			headers: {
-				"Authorization": auth,
+				"Authorization": token,
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
@@ -24,7 +27,7 @@
 		{
 			method: "DELETE",
 			headers: {
-				"Authorization": auth,
+				"Authorization": token,
 			}
 		}
 	));

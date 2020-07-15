@@ -1,8 +1,10 @@
 (() => {
-	const auth = prompt("Token:");
-	if (auth === null) { return; }
-	const body = prompt("Message:", "uwu");
-	if (body === null) { return; }
+	const token = prompt("Token:");
+	if (token === null) { return; }
+	
+	const msg = prompt("Message:", "uwu");
+	if (msg === null) { return; }
+	
 	fetch(
 		`https://discordapp.com/api/v6/channels/${
 			document.URL.split("/")[5]
@@ -10,15 +12,12 @@
 		{
 			method: "POST",
 			headers: {
-				"Authorization": auth,
+				"Authorization": token,
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"content": body
+				"content": msg
 			})
 		}
-	)
-	.then(r => r.json())
-	.then(console.log)
-	.catch(console.error);
+	);
 })();
