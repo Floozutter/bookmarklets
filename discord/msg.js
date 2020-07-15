@@ -1,6 +1,8 @@
 (() => {
-	let auth = "";
-	let body = "uwu";
+	const auth = prompt("Token:");
+	if (auth === null) { return; }
+	const body = prompt("Message:", "uwu");
+	if (body === null) { return; }
 	fetch(
 		`https://discordapp.com/api/v6/channels/${
 			document.URL.split("/")[5]
