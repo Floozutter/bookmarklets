@@ -6,7 +6,7 @@
 	if (msg === null) { return; }
 	
 	fetch(
-		`https://discordapp.com/api/v6/channels/${
+		`https://discord.com/api/v6/channels/${
 			document.URL.split("/")[5]
 		}/messages`,
 		{
