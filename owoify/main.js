@@ -12,7 +12,7 @@
 	function r(n) {
 		if (n.nodeType === Node.TEXT_NODE) {
 			n.textContent = Object.entries(d).reduce(
-				(t, [k, v]) => t.replace(k, v),
+				(t, [k, v]) => t.replace(new RegExp(k, "g"), v),
 				n.textContent
 			);
 		}
