@@ -11,3 +11,5 @@ Posts a "Peekaboo!" to the current channel, then immediately deletes it.
 
 ## count.js
 Counts up from 0 while waiting at least a minute between each post.
+
+*Works well for [MEE6 leveling](https://mee6.xyz/leveling)!*
