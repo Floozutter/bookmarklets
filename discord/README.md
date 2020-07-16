@@ -8,3 +8,6 @@ Posts a message to the current channel using your authorization token.
 
 ## peekaboo.js
 Posts a "Peekaboo!" to the current channel, then immediately deletes it.
+
+## count.js
+Counts up from 0 while waiting at least a minute between each post.
