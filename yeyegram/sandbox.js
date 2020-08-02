@@ -11,7 +11,7 @@ function requiredSpace(runs) {
 }
 
 function possibleSolutions(length, runs) {
-	if (runs.length == 0) {
+	if (runs.length === 0) {
 		return [Array(length).fill(Cell.EMPTY)];
 	} else if (length < requiredSpace(runs)) {
 		return [];
@@ -32,6 +32,77 @@ function possibleSolutions(length, runs) {
 	}
 }
 
+function getCommon(line, solutions) {
+	let solAcc = [...solutions];
+	line.forEach((cell, idx) => {
+		if (cell !== Cell.UNKNOWN) {
+			solAcc = solAcc.filter(sol => sol[idx] === cell);
+		}
+	});
+	if (solAcc.length === 0) {
+		return null;
+	} else {
+		const common = [...line];
+		common.forEach((cell, idx) => {
+			if (
+				cell === Cell.UNKNOWN
+				&& solAcc.every(sol => sol[idx] === solAcc[0][idx])
+			) {
+				common[idx] = solAcc[0][idx];
+			}
+		});
+		return common;
+	}
+}
+
+class Grid {
+	constructor(rowLength, colLength) {
+		this.rowLength = rowLength;
+		this.colLength = colLength
+		this.data = Array(this.rowLength);
+		for (let i = 0; i < this.rowLength; i++) {
+			this.data[i] = Array(this.colLength).fill(Cell.UNKNOWN);
+		}
+	}
+	getRow(rowIdx) {
+		return [...this.data[rowIdx]];
+	}
+	setRow(rowIdx, line) {
+		this.data[rowIdx] = [...line];
+	}
+	getCol(colIdx) {
+		const line = Array(this.rowLength).fill(Cell.UNKNOWN);
+		line.forEach((_, idx) => {
+			line[idx] = this.data[idx][colIdx];
+		});
+		return line;
+	}
+	setCol(colIdx, line) {
+		line.forEach((cell, idx) => {
+			this.data[idx][colIdx] = line[idx];
+		});
+	}
+}
+
+function solve(rowRuns, colRuns) {
+	const grid = new Grid(rowRuns.length, colRuns.length);
+	for (let iter = 0; iter < 5; iter++) {
+		for (let rowIdx = 0; rowIdx < grid.rowLength; rowIdx++) {
+			grid.setRow(rowIdx, getCommon(
+				grid.getRow(rowIdx),
+				possibleSolutions(grid.colLength, rowRuns[rowIdx])
+			));
+		}
+		for (let colIdx = 0; colIdx < grid.colLength; colIdx++) {
+			grid.setCol(colIdx, getCommon(
+				grid.getCol(colIdx),
+				possibleSolutions(grid.rowLength, colRuns[colIdx])
+			));
+		}
+	}
+	return grid;
+}
+
 function stringifyLine(line) {
 	return line.map(e => {
 		if (e === Cell.UNKNOWN) {
@@ -44,6 +115,10 @@ function stringifyLine(line) {
 			return "!";
 		}
 	}).join("");
+}
+
+function stringifyGrid(grid) {
+	return grid.data.map(stringifyLine).join("\n");
 }
 
 function arrEqual(a, b) {
@@ -87,7 +162,7 @@ function test() {
 		arrEqual(
 			possibleSolutions(9, [5, 2]).map(stringifyLine),
 			["#####.##.", "#####..##", ".#####.##"]
-		)
+		),
 		arrEqual(
 			possibleSolutions(8, [2, 1, 3]).map(stringifyLine),
 			["##.#.###"]
@@ -96,4 +171,13 @@ function test() {
 	asserts.forEach((a, i) => console.assert(a, i));
 }
 
+function main() {
+	// Example nonogram source: https://rosettacode.org/wiki/Nonogram_solver
+	console.log(stringifyGrid(solve(
+		[[3], [2,1], [3,2], [2,2], [6], [1,5], [6], [1], [2]],
+		[[1,2], [3,1], [1,5], [7,1], [5], [3], [4], [3]]
+	)));
+}
+
 test();
+main();
