@@ -56,12 +56,12 @@ function getCommon(line, solutions) {
 }
 
 class Grid {
-	constructor(rowLength, colLength) {
-		this.rowLength = rowLength;
-		this.colLength = colLength
-		this.data = Array(this.rowLength);
-		for (let i = 0; i < this.rowLength; i++) {
-			this.data[i] = Array(this.colLength).fill(Cell.UNKNOWN);
+	constructor(rowCount, colCount) {
+		this.rowCount = rowCount;
+		this.colCount = colCount
+		this.data = Array(this.rowCount);
+		for (let i = 0; i < this.rowCount; i++) {
+			this.data[i] = Array(this.colCount).fill(Cell.UNKNOWN);
 		}
 	}
 	getRow(rowIdx) {
@@ -71,7 +71,7 @@ class Grid {
 		this.data[rowIdx] = [...line];
 	}
 	getCol(colIdx) {
-		const line = Array(this.rowLength).fill(Cell.UNKNOWN);
+		const line = Array(this.rowCount).fill(Cell.UNKNOWN);
 		line.forEach((_, idx) => {
 			line[idx] = this.data[idx][colIdx];
 		});
@@ -82,23 +82,39 @@ class Grid {
 			this.data[idx][colIdx] = line[idx];
 		});
 	}
+	getLine(isRow, idx) {
+		return isRow ? this.getRow(idx) : this.getCol(idx);
+	}
+	setLine(isRow, idx, line) {
+		isRow ? this.setRow(idx, line) : this.setCol(idx, line);
+	}
 }
 
 function solve(rowRuns, colRuns) {
 	const grid = new Grid(rowRuns.length, colRuns.length);
-	for (let iter = 0; iter < 5; iter++) {
-		for (let rowIdx = 0; rowIdx < grid.rowLength; rowIdx++) {
-			grid.setRow(rowIdx, getCommon(
-				grid.getRow(rowIdx),
-				possibleSolutions(grid.colLength, rowRuns[rowIdx])
-			));
-		}
-		for (let colIdx = 0; colIdx < grid.colLength; colIdx++) {
-			grid.setCol(colIdx, getCommon(
-				grid.getCol(colIdx),
-				possibleSolutions(grid.rowLength, colRuns[colIdx])
-			));
-		}
+	const linesToUpdate = [];
+	function updateLine(isRow, idx) {
+		const old = grid.getLine(isRow, idx);
+		const fresh = getCommon(old, possibleSolutions(
+			old.length,
+			(isRow ? rowRuns : colRuns)[idx]
+		));
+		fresh.forEach((freshCell, cellIdx) => {
+			if (freshCell !== old[cellIdx]) {
+				linesToUpdate.push([!isRow, cellIdx]);
+			}
+		});
+		grid.setLine(isRow, idx, fresh);
+	}
+	for (let rowIdx = 0; rowIdx < grid.rowCount; rowIdx++) {
+		linesToUpdate.push([true, rowIdx]);
+	}
+	for (let colIdx = 0; colIdx < grid.colCount; colIdx++) {
+		linesToUpdate.push([false, colIdx]);
+	}
+	while (linesToUpdate.length > 0) {
+		let [isRow, idx] = linesToUpdate.pop();
+		updateLine(isRow, idx);
 	}
 	return grid;
 }
@@ -172,10 +188,29 @@ function test() {
 }
 
 function main() {
-	// Example nonogram source: https://rosettacode.org/wiki/Nonogram_solver
+	// Example nonograms source: https://rosettacode.org/wiki/Nonogram_solver
 	console.log(stringifyGrid(solve(
 		[[3], [2,1], [3,2], [2,2], [6], [1,5], [6], [1], [2]],
 		[[1,2], [3,1], [1,5], [7,1], [5], [3], [4], [3]]
+	)));
+	function runsFromString(str) {
+		return str.split(" ").map(
+			chars => chars.split("").map(
+				c => c.charCodeAt(0) - "A".charCodeAt(0) + 1
+			)
+		);
+	}
+	console.log(stringifyGrid(solve(
+		runsFromString("F CAC ACAC CN AAA AABB EBB EAA ECCC HCCC"),
+		runsFromString("D D AE CD AE A DA BBB CC AAB BAA AAB DA AAB AAA BAB AAA CD BBA DA")
+	)));
+	console.log(stringifyGrid(solve(
+		runsFromString("CA BDA ACC BD CCAC CBBAC BBBBB BAABAA ABAD AABB BBH BBBD ABBAAA CCEA AACAAB BCACC ACBH DCH ADBE ADBB DBE ECE DAA DB CC"),
+		runsFromString("BC CAC CBAB BDD CDBDE BEBDF ADCDFA DCCFB DBCFC ABDBA BBF AAF BADB DBF AAAAD BDG CEF CBDB BBB FC")
+	)));
+	console.log(stringifyGrid(solve(
+		runsFromString("E BCB BEA BH BEK AABAF ABAC BAA BFB OD JH BADCF Q Q R AN AAN EI H G"),
+		runsFromString("E CB BAB AAA AAA AC BB ACC ACCA AGB AIA AJ AJ ACE AH BAF CAG DAG FAH FJ GJ ADK ABK BL CM")
 	)));
 }
 
