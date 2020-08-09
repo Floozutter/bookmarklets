@@ -80,27 +80,6 @@ function getCommon(line, solutions) {
 	}
 }
 
-/*
- * Returns a string representation of the given line.
- * @param {Array<Cell>} line
- * @return {string}
- */
-function stringifyLine(line) {
-	return line.map(
-		e => {
-			if (e === Cell.UNKNOWN) {
-				return "?";
-			} else if (e === Cell.EMPTY) {
-				return ".";
-			} else if (e === Cell.FILLED) {
-				return "#";
-			} else {
-				return "!";
-			}
-		}
-	).join("");
-}
-
 
 /*
  * Class to represent the state of a Nonogram's grid.
@@ -146,10 +125,6 @@ class Grid {
 			});
 		}
 	}
-	
-	toString() {
-		return this.data.map(stringifyLine).join("\n");
-	}
 }
 
 
@@ -186,6 +161,37 @@ function solve([rowsRuns, colsRuns]) {
 		updateLine(isRow, idx);
 	}
 	return grid;
+}
+
+
+/*
+ * Returns a string representation of the given line.
+ * @param {Array<Cell>} line
+ * @return {string}
+ */
+function stringifyLine(line) {
+	return line.map(
+		e => {
+			if (e === Cell.UNKNOWN) {
+				return "?";
+			} else if (e === Cell.EMPTY) {
+				return ".";
+			} else if (e === Cell.FILLED) {
+				return "#";
+			} else {
+				return "!";
+			}
+		}
+	).join("");
+}
+
+/*
+ * Returns a string representation of the given grid.
+ * @param {Grid} grid
+ * @return {string}
+ */
+function stringifyGrid(grid) {
+	return grid.data.map(stringifyLine).join("\n");
 }
 
 
@@ -240,10 +246,10 @@ function test() {
 
 function main() {
 	// Example nonograms source: https://rosettacode.org/wiki/Nonogram_solver
-	console.log(solve([
+	console.log(stringifyGrid(solve([
 		[[3], [2,1], [3,2], [2,2], [6], [1,5], [6], [1], [2]],
 		[[1,2], [3,1], [1,5], [7,1], [5], [3], [4], [3]]
-	]).toString());
+	])));
 	function runsFromString(str) {
 		return str.split("\n").map(
 			linesRuns => linesRuns.split(" ").map(
@@ -253,18 +259,18 @@ function main() {
 			)
 		);
 	}
-	console.log(solve(runsFromString(
+	console.log(stringifyGrid(solve(runsFromString(
 		"F CAC ACAC CN AAA AABB EBB EAA ECCC HCCC\n" +
 		"D D AE CD AE A DA BBB CC AAB BAA AAB DA AAB AAA BAB AAA CD BBA DA"
-	)).toString());
-	console.log(solve(runsFromString(
+	))));
+	console.log(stringifyGrid(solve(runsFromString(
 		"CA BDA ACC BD CCAC CBBAC BBBBB BAABAA ABAD AABB BBH BBBD ABBAAA CCEA AACAAB BCACC ACBH DCH ADBE ADBB DBE ECE DAA DB CC\n" +
 		"BC CAC CBAB BDD CDBDE BEBDF ADCDFA DCCFB DBCFC ABDBA BBF AAF BADB DBF AAAAD BDG CEF CBDB BBB FC"
-	)).toString());
-	console.log(solve(runsFromString(
+	))));
+	console.log(stringifyGrid(solve(runsFromString(
 		"E BCB BEA BH BEK AABAF ABAC BAA BFB OD JH BADCF Q Q R AN AAN EI H G\n" +
 		"E CB BAB AAA AAA AC BB ACC ACCA AGB AIA AJ AJ ACE AH BAF CAG DAG FAH FJ GJ ADK ABK BL CM"
-	)).toString());
+	))));
 }
 
 test();
