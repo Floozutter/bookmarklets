@@ -36,9 +36,9 @@
 		function transpose(grid) {
 			return Object.keys(grid[0]).map(colIdx => grid.map(row => row[colIdx]));
 		}
-		const rowRuns = solution.map(runsFromLine);
-		const colRuns = transpose(solution).map(runsFromLine);
-		return [rowRuns, colRuns];
+		const rowsRuns = solution.map(runsFromLine);
+		const colsRuns = transpose(solution).map(runsFromLine);
+		return [rowsRuns, colsRuns];
 	}
-	const [rowRuns, colRuns] = getRuns(getSolution());
+	const [rowsRuns, colsRuns] = getRuns(getSolution());
 })();
