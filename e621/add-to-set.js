@@ -1,5 +1,5 @@
 (() => {
-    const set_id = "0";
+    const set_id = "";
     const post_id = document.querySelector("meta[name='post-id']").content;
     $.ajax({
         type: "POST",
