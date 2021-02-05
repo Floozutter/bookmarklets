@@ -5,4 +5,4 @@ bookmarklets for e621!
 adds the page's post to a hardcoded set
 
 ## click-all.js
-clicks every post in the page
+clicks every post in the page (useful for modes like "Add to Set")
