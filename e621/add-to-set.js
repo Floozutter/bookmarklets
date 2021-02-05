@@ -5,5 +5,7 @@
         type: "POST",
         url: `/post_sets/${set_id}/add_posts.json`,
         data: {post_ids: [post_id]},
+        success: () => { alert("added. uwu"); },
+        fail: () => { alert("error! ono"); },
     });
 })();
