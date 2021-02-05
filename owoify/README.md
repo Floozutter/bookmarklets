@@ -1,2 +1,2 @@
 # owoify
-Replace normal English text with owo-speak!
+replace normal text with owo-speak!

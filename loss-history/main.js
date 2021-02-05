@@ -1,5 +1,5 @@
 (() => {
-	document.querySelectorAll(".GameItem.Win").forEach((n) => {
-		n.parentNode.remove();
-	});
+    document.querySelectorAll(".GameItem.Win").forEach((n) => {
+        n.parentNode.remove();
+    });
 })();

@@ -1,2 +1,2 @@
 # retitle
-Change a webpage's title!
+change a page's title!

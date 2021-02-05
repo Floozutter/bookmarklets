@@ -1,2 +1,2 @@
 # bookmarklets
-My collection of bookmarklets!
+my bookmarklets!
