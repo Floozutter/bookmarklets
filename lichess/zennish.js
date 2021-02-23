@@ -40,7 +40,6 @@
         });
     };
     document.addEventListener("keydown", e => {
-        console.log(e.code);
         if (e.code == "KeyZ") {
             unhide();
         } else if (e.code == "KeyX") {
