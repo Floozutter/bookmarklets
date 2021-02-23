@@ -2,4 +2,4 @@
 bookmarklets for lichess!
 
 ## zennish
-removes some UI elements
+hides some UI elements
