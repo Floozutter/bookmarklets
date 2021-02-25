@@ -40,10 +40,10 @@
         });
     };
     document.addEventListener("keydown", e => {
-        if (e.code == "KeyZ") {
-            unhide();
-        } else if (e.code == "KeyX") {
+        if (e.code == "KeyX") {
             hide();
+        } else if (e.code == "KeyC") {
+            unhide();
         }
     });
     hide();
